@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body{background: black;text-align: center}
+    .parent{width: 400px;height: 300px;margin:10px auto;position: relative;border: 1px solid red}
+    canvas{background: white;position: absolute;left: 0;right: 0}
+    .box{width: 100px;height: 100px;position: absolute;left: 100px;top: 100px;border: 1px solid red}
+    .box .handle{width: 10px;height: 10px;border: 1px solid red;position: absolute}
+    .lt{left:-6px;top: -6px}
+    .rt{right: -6px;top: -6px}
+    .lb{left: -6px;bottom:-6px}
+    .rb{right: -6px;bottom:-6px}
+    #test{display: inline-block}
+  </style>
+  <script src="http://localhost:8890/socket.io/socket.io.js"></script>
+  
+  <script>
+    window.onload=function(){
+      const sock = io.connect('ws://localhost:8890');
+      let timer;
+      let oBtn = document.getElementById('b');
+      let oInp = document.getElementById('name');
+      let oP = document.getElementsByClassName('parent')[0];
+      let oC = document.getElementById('c');
+      let gd = oC.getContext('2d');
+      let oImg = document.getElementById('test');
+      let lastX, lastY;
+
+      oC.onmousedown=(ev)=>{
+        timer = setInterval(pushImage,500)
+        lastX = ev.offsetX;
+        lastY = ev.offsetY;
+        oC.onmousemove=(ev)=>{
+          gd.beginPath();
+          gd.moveTo(lastX, lastY);
+          gd.lineTo(ev.offsetX, ev.offsetY);
+          gd.stroke();
+          lastX = ev.offsetX;
+          lastY = ev.offsetY;
+        }
+        document.onmouseup=()=>{
+          clearInterval(timer)
+          pushImage();
+          oC.onmousemove=null;
+          document.onmouseup=null;
+        }
+      }  
+
+      function pushImage(){
+        let str = encodeURIComponent(oC.toDataURL());
+        sock.emit('push',str)
+      }
+
+      sock.on('push_ret',str=>{
+        let data = decodeURIComponent(str);
+        console.log('get');
+        console.log('data')
+        let img = new Image();
+        img.src=data;
+        img.onload=function(){
+          gd.clearRect(0,0,oC.width,oC.height);
+          gd.drawImage(img,0,0)
+        }
+      })
+
+      sock.on('hello',text=>{
+        console.log(text)
+      })
+
+      oBtn.onclick=function(){
+        const name = oInp.value.trim();
+        if (name) {
+          sock.emit('login',name)
+        } else {
+          alert("请输入用户名")
+        }
+      }
+      sock.on('login_ret', text=>{
+        console.log(text)
+      })
+
+    }   
+  </script>
+</head>
+<body>
+  用户名:<input type="text" id='name'>
+  <input type="button" value="登录" id="b">
+  <div class="parent">
+    <canvas id="c" width="400" height="300"></canvas>
+  </div>
+  <img src="" id="test">
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html{font-size: 20px}
+        .box{width: 8rem;height: 8rem;margin: 50px auto;line-height: 8rem;background: #66f;transform: rotate(0deg)}
+    </style>
+    <script>
+        window.onload=function(){
+            let oDiv = document.getElementsByClassName('box')[0];
+console.log(oDiv)
+            let old_ang = 0; 
+            let i = 0;
+            oDiv.addEventListener('touchstart', function(ev){
+                console.log(oDiv)
+                if (ev.targetTouches.length>=2) {
+                    let startAngle = Math.atan2(ev.targetTouches[0].pageY-ev.targetTouches[1].pageY,ev.targetTouches[0].pageX-ev.targetTouches[1].pageX)
+                    let startAng=old_ang;
+                    ev.preventDefault();
+                    function fn_roate(ev){
+                        if (ev.targetTouches.length>=2) {
+                            let endAngle = Math.atan2(ev.targetTouches[0].pageY-ev.targetTouches[1].pageY,ev.targetTouches[0].pageX-ev.targetTouches[1].pageX);
+                            let ang = (endAngle - startAngle)*180/Math.PI;
+                            old_ang = startAng+ang;
+                            i++;
+                            alert(i)
+                            oDiv.style.transform=`rotate(${old_ang}deg)`
+                        }
+                        ev.preventDefault();
+                    } 
+                    function fn_end(){
+                        alert('end')
+                        oDiv.removeEventListener('touchmove', fn_roate);
+                        oDiv.removeEventListener('touchend', fn_end);
+                    }
+                    oDiv.addEventListener('touchmove', fn_roate, false);
+                    oDiv.addEventListener('touchend', fn_end, false);
+                }       
+            },false)
+        }
+    </script>
+</head>
+<body>
+    <div class="box">111</div>
+</body>
+</html>

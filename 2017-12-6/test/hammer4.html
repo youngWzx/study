@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{margin: 0; padding: 0; list-style: none}
+
+    #ul1 li {height: 30px; border: 1px solid black; position: relative; background: #ccc; line-height: 30px; overflow: hidden}
+    #ul1 li .content {position: absolute; background: white;width: 100%; z-index: 2; box-sizing: border-box; padding-left: 10px; transition: 0.3s all ease}
+    #ul1 li .content i {width: 6px; height: 6px; border-radius: 50%;background: blue;left: 2px;top: 12px; position: absolute}
+    #ul1 li .btns {position: absolute; z-index: 1;right: 0;top: 0;line-height: 30px;overflow: hidden;height: 30px}
+    #ul1 li .btns a {text-decoration: none; height: 30px; text-align: center;float: right; position: relative; transition: 0.3s all ease}
+    #ul1 li .btns a.btn_read{background: #f66;color: white}
+    #ul1 li .btns a.btn_del{background: #66f; color: white}
+    #ul1 li .btns a span{width: 50px;position: absolute; left: 50%;margin-left: -25px; top: 0;}
+  </style>
+  <script src="../hammer.js"></script>
+  <script>
+    window.onload=function(){
+      let oUl1 = document.getElementById('ul1');
+      let aLi = document.querySelectorAll('#ul1 li');
+      let aBtnDel = document.querySelectorAll('#ul1 .btn_del');
+      let aBtnRead = document.querySelectorAll("#ul1 .btn_read");
+      let activeIndex = null;
+
+      Array.from(aLi).forEach((li, index)=>{
+        let hammer = new Hammer(li,{});
+        let oContent = li.children[0];
+
+        hammer.on('swipeleft',function(){
+          if (activeIndex !== null) {
+            aLi[activeIndex].children[0].style.transform = 'translateX(0px)';
+            Array.from(aLi[activeIndex].children[0].nextElementSibling.children).forEach(a=>{
+              a.style.width=0;
+            }) 
+          }
+          activeIndex = index;
+          oContent.style.transform = 'translateX(-100px)';
+          Array.from(oContent.nextElementSibling.children).forEach(a=>{
+            a.style.width='50px';
+          })
+        });
+
+        hammer.on('swiperight',function(){
+          if (activeIndex == index) {
+            activeIndex=null;
+          }
+          oContent.style.transform = 'translateX(0px)';
+          Array.from(oContent.nextElementSibling.children).forEach(a=>{
+            a.style.width=0;
+          })
+        })
+      })
+      
+      Array.from(aBtnDel).forEach(btn=>{
+        btn.onclick = function(){
+          let li = btn.parentNode.parentNode;
+
+          li.style.transition = '0.3s all ease';
+          li.style.height='0';
+          function end(){
+            console.log('remove')
+            console.log(li)
+            oUl1.removeChild(li);
+            li.removeEventListener('transitionend', end)
+          }
+          li.addEventListener('transitionend', end, false)
+        }
+      })
+    }
+  </script>
+</head>
+<body>
+  <ul id="ul1">
+    <li>
+      <div class="content"><i></i>短信</div>
+      <div class="btns">
+        <a href="#" class="btn_read"><span>已读</span></a>
+        <a href="#" class="btn_del"><span>删除</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="content"><i></i>短信</div>
+      <div class="btns">
+        <a href="#" class="btn_read"><span>已读</span></a>
+        <a href="#" class="btn_del"><span>删除</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="content"><i></i>短信</div>
+      <div class="btns">
+        <a href="#" class="btn_read"><span>已读</span></a>
+        <a href="#" class="btn_del"><span>删除</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="content"><i></i>短信</div>
+      <div class="btns">
+        <a href="#" class="btn_read"><span>已读</span></a>
+        <a href="#" class="btn_del"><span>删除</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="content"><i></i>短信</div>
+      <div class="btns">
+        <a href="#" class="btn_read"><span>已读</span></a>
+        <a href="#" class="btn_del"><span>删除</span></a>
+      </div>
+    </li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    body{background: black;text-align: center}
+    canvas{background: white;}
+    </style>
+    <script>
+    window.onload=function(){
+        var c = document.getElementById('test');
+        gd = c.getContext('2d');
+        let lastx,lasty;
+        c.onmousedown=function(ev){
+            //console.log(ev)
+            gd.moveTo(ev.offsetX,ev.offsetY);
+            lastx=ev.offsetX;
+            lasty=ev.offsetY;
+            c.onmousemove=draw
+        }
+        
+        function draw(ev){
+            gd.beginPath()
+            gd.moveTo(lastx,lasty);
+            gd.lineTo(ev.offsetX,ev.offsetY)
+            lastx=ev.offsetX;
+            lasty=ev.offsetY;
+            gd.lineWidth=10
+            gd.strokeStyle=Math.random()>0.5?'red':'blue'
+            gd.closePath();
+            gd.stroke()
+        }
+        c.onmouseup=function(){
+            c.onmousemove=null;
+        }
+    }
+    </script>
+</head>
+<body>
+    <canvas id="test" width="600px" height="450px"></canvas>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html{font-size: 20px}
+        div{height: 8rem;width: 8rem;position: absolute}
+        .box1{left: 0;top: 0;background: #ccc}
+        .box2{left: 7em;top: 7em;background: #f66}
+        .box3{left: 10em;top: 10em;background: #6F6}
+    </style>
+    <script>
+        window.onload=function(){
+            let oDiv1 = document.querySelector('.box1');
+            console.log(oDiv1)
+            let oDiv2 = document.querySelector('.box2');
+            let oDiv3 = document.querySelector('.box3');
+
+            function addMove(obj){
+                
+                obj.addEventListener('touchstart',function(ev){
+                    let id = ev.targetTouches[0].identifier;
+                    let disX = ev.targetTouches[0].pageX - obj.offsetLeft;
+                    let disY = ev.targetTouches[0].pageY - obj.offsetTop;
+
+                    ev.preventDefault();
+                    ev.cancelBubble=true;
+                    function fn_move(ev){
+                        ev.preventDefault();
+                        obj.style.left = ev.targetTouches[0].pageX - disX + 'px';
+                        obj.style.top = ev.targetTouches[0].pageY - disY + 'px';
+                        
+                    };
+                    function fn_end(ev){
+                        Array.from(ev.changedTouches).some(touch=>{
+                            if (touch.identifier === id) {
+                                obj.removeEventListener('touchmove',fn_move);
+                                obj.removeEventListener('touchend', fn_end)
+                            }
+                            return touch.identifier === id;
+                        })
+
+                    }
+                    obj.addEventListener('touchmove',fn_move,false);
+                    obj.addEventListener('touchend',fn_end,false);
+                },false)
+            }
+            addMove(oDiv1);
+            addMove(oDiv2)
+            addMove(oDiv3)
+        }
+    </script>
+</head>
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+</body>
+</html>

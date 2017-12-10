@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+    function show(arg){
+            console.log(arg.s)
+            const oUl = document.getElementById('ul1');
+            if(oUl){
+            oUl.innerHTML = '';
+            arg.s.forEach(function(element) {
+                var li = document.createElement('li');
+                li.innerHTML=element;
+                oUl.appendChild(li);
+            });
+        }
+    }
+    window.onload=function(){
+        oInput = document.getElementById("search");
+        oInput.onkeyup=function(){
+            var sc = document.createElement('script');
+            sc.src = `https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${oInput.value}&cb=show`;
+            document.getElementsByTagName('head')[0].appendChild(sc)
+        }
+    }
+</script>
+<script src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=w&cb=show"></script>
+
+<body>
+    <input type="text" id="search"/>
+    <ul id="ul1"></ul>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- readAsText/readAsDataURL/readAsArrayBuffer/readAsBinaryString -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    div{width: 400px;height: 300px;line-height: 200px;border: 1px solid black;text-align: center}
+    </style>
+    <script>
+        window.onload=function(){
+            const oDiv = document.getElementById('div1');
+            const oImg = document.getElementById('img');
+            oDiv.addEventListener('dragenter',function(){
+                oDiv.innerHTML="ok";
+            },false);
+            oDiv.addEventListener('dragleave',function(){
+                oDiv.innerHTML="亲，将文件拖到这里上传";
+            },false);
+            oDiv.addEventListener('dragover',function(e){
+                e.preventDefault();
+            });
+            oDiv.addEventListener('drop',function(e){
+                e.preventDefault();
+                var file = e.dataTransfer.files[0];
+                console.log(file);
+                var reader = new FileReader();
+                reader.onload=function(){
+                    //alert(this.result);
+                    oImg.src=this.result;
+                }
+                reader.onerror=function(){
+                    alert('失败了')
+                }
+                //reader.readAsText(file)
+                reader.readAsDataURL(file)
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="div1">亲，将文件拖到这里上传</div>
+    <img src="" id="img">
+</body>
+</html>

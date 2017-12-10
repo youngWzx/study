@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  *{margin:0;padding: 0;}
+  </style>
+  <script>
+    window.onload=function(){
+      let oV = document.getElementById('v');
+      console.log(oV)
+      let oBtn1 = document.getElementById('b1');
+      let oBtn2 = document.getElementById('b2');
+      let oBtn3 = document.getElementById('b3');
+      let oC = document.getElementById('can');
+      let gd = oC.getContext('2d');
+      oBtn1.onclick=function(){
+        oV.play();
+      }
+      oBtn2.onclick=function(){
+        oV.pause();
+      }
+      oBtn3.onclick=function(){
+        oV.pause();
+        oV.currentTime=0;
+      }
+      next();
+      function next(){
+        requestAnimationFrame(()=>{
+          gd.drawImage(
+            oV,
+            0,0,
+          );
+          next();
+        })
+      }
+    }
+  </script>
+  <style>
+    
+  </style>
+</head>
+<body>
+    <input type="button" value="播放" id="b1">
+    <input type="button" value="暂停" id="b2">
+    <input type="button" value="停止" id="b3">
+    <br>
+  <video src="movie.mp4" id="v" width="320" height="240"></video>
+  <canvas id='can' width="320" height="240"></canvas>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body{background: black;text-align: center}
+    .parent{width: 400px;height: 300px;margin:10px auto;position: relative;border: 1px solid red}
+    canvas{background: white;position: absolute;left: 0;right: 0}
+    .box{width: 100px;height: 100px;position: absolute;left: 100px;top: 100px;border: 1px solid red}
+    .box .handle{width: 10px;height: 10px;border: 1px solid red;position: absolute}
+    .lt{left:-6px;top: -6px}
+    .rt{right: -6px;top: -6px}
+    .lb{left: -6px;bottom:-6px}
+    .rb{right: -6px;bottom:-6px}
+  </style>
+  <script>
+    function ajax(method,url,data){
+      let xhr = new XMLHttpRequest();
+      xhr.open(method,url,data);
+      xhr.send(encodeURIComponent(data));
+      xhr.onreadystatechange=function(){
+        if (xhr.readyState==4) {
+          if (xhr.status==200) {
+            alert(xhr.responseText);
+          }
+          
+        }
+      }
+    }
+
+    window.onload=function(){
+      let oB = document.getElementById('b');
+      let oBox = document.getElementsByClassName('box')[0];
+      let oP = document.getElementsByClassName('parent')[0];
+      let oLt = oBox.getElementsByClassName('lt')[0];
+      let oLb = oBox.getElementsByClassName('lb')[0];
+      let oRt = oBox.getElementsByClassName('rt')[0];
+      let oRb = oBox.getElementsByClassName('rb')[0];
+      let oC = document.getElementById('c');
+      let gd = oC.getContext('2d');
+      let lastX, lastY;
+
+      oC.onmousedown=(ev)=>{
+        lastX = ev.offsetX;
+        lastY = ev.offsetY;
+        oc.onmousemove=(ev)=>{
+          gd.beginPath();
+          gd.moveTo(lastX, lastY);
+          gd.lineTo(ev.offsetX, ev.offsetY);
+          gd.stroke();
+          lastX = ev.offsetX;
+          lastY = ev.offsetY;
+        }
+        document.onmouseup=()=>{
+          oc.onmousemove=null;
+          document.onmouseup=null;
+        }
+      }
+
+      oB.onclick=function(){
+        let oCtemp = document.createElement('canvas');
+        oCtemp.width = oBox.offsetWidth;
+        oCtemp.height = oBox.offsetHeight;
+        let gdtemp = oCtemp.getContext('2d');
+        gdtemp.drawImage(
+          oC,
+          oBox.offsetLeft, oBox.offsetTop, oBox.offsetWidth, oBox.offsetHeight,
+          0, 0, oBox.offsetWidth, oBox.offsetHeight,
+        );
+        let oC2 =document.getElementById('c2');
+        let gdd = oC2.getContext('2d');
+        let img = new Image();
+        img.src = oCtemp.toDataURL();
+        img.onload=function(){
+          gdd.drawImage(
+            img
+          ,0,0
+        )
+        }
+
+         ajax('POST','/upload_base64',oCtemp.toDataURL())
+      }
+
+      oBox.onmousedown=function(ev){
+        let x = ev.offsetX;
+        let y = ev.offsetY;
+        document.addEventListener('mousemove', obmove, false)
+        document.addEventListener('mouseup', obend, false)
+        function obmove(ev){
+          ev.preventDefault();
+          if (ev.pageX<(x+oP.offsetLeft)) {
+            oBox.style.left = 0;
+          } else if(ev.pageX>(oP.offsetLeft+oP.offsetWidth-oBox.offsetWidth+x)) {
+            oBox.style.left = oP.offsetWidth-oBox.offsetWidth+'px';         
+          } else {
+            oBox.style.left =(ev.pageX - x - oP.offsetLeft)+'px';
+          }
+          
+          if (ev.pageY<(y+oP.offsetTop)) {
+            oBox.style.top = 0;
+          } else if (ev.pageY>(oP.offsetTop+oP.offsetHeight-oBox.offsetHeight+y)){ 
+            oBox.style.top=oP.offsetHeight-oBox.offsetHeight+'px';
+          } else{
+            oBox.style.top = (ev.pageY - y - oP.offsetTop)+'px';
+          }    
+        }
+        //document.onmouseup=
+        function obend(ev){
+          document.removeEventListener('mousemove', obmove, false)
+          document.removeEventListener('mouseup', obend, false)          
+          // document.onmousemove = null;
+          // oBox.onmouseup = null;
+        }
+      }
+
+      oLt.onmousedown=function(ev){
+        //ev.stopPropagation();
+        ev.cancelBubble=true;
+        let x=ev.pageX;
+        let y=ev.pageY;
+        let w = oBox.offsetWidth - 2;
+        let h = oBox.offsetHeight - 2;
+        let l = oBox.offsetLeft;
+        let t = oBox.offsetTop;
+        console.log(w)
+        console.log(h)
+        console.log(x)
+        document.onmousemove=function(ev){
+          let changeX = x-ev.pageX;
+          console.log(changeX)
+          let changeY = y-ev.pageY;
+          oBox.style.width=w+changeX+'px';
+          console.log( oBox.style.width)
+          oBox.style.height=h+changeY+'px';
+          oBox.style.left=l-changeX+'px';
+          console.log( oBox.style.left)
+          oBox.style.top=t-changeY+'px';
+        }
+        oLt.onmouseup=function(){
+          document.onmousemove=null;
+          oLt.onmousemove=null;
+        }
+      }
+      oRt.onmousedown=function(ev){
+        ev.cancelBubble=true;
+      }
+      oLb.onmousedown=function(ev){
+        ev.cancelBubble=true;
+      }
+      oRb.onmousedown=function(ev){
+        ev.cancelBubble=true;
+      }
+    }
+  </script>
+</head>
+<body>
+  <input type="button" value="lalala" id="b">
+  <div class="parent">
+    <canvas id="c" width="400" height="300"></canvas>
+    <div class="box">   
+      <div class="lt handle"></div>
+      <div class="rt handle"></div>
+      <div class="lb handle"></div>
+      <div class="rb handle"></div>
+    </div>
+  </div>
+  <canvas id="c2" width="400" height="300"></canvas>  
+</body>
+</html>

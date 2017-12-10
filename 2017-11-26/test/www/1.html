@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    window.onload=function(){
+      let oFile1 = document.getElementById('file1');
+      let oBtn = document.getElementById('btn1');
+      let oDiv = document.getElementById('progress');
+      let oDivDrop = document.getElementsByClassName('drop')[0];
+      oBtn.onclick = function(){
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST','/upload',true);
+        let formData = new FormData();
+        Array.from(oFile1.files).forEach(file=>{
+          formData.append('f1',file)
+        });
+        xhr.upload.onprogress=function(e){
+          console.log(e)
+          oDiv.style.width=100*(e.loaded/e.total) + '%';
+        }
+        xhr.send(formData);
+        xhr.onreadystatechange=function(){
+          if (xhr.readyState == 4) {
+            if(xhr.status == 200){
+              console.log(xhr.responseText)
+            }
+          }
+        }
+      }
+      oFile1.onchange=function(ev){
+        console.log(ev);
+        console.log(oFile1);
+      }
+
+      oDivDrop.addEventListener('dragenter',function(){
+        oDivDrop.innerHTML = '请松手';
+      })
+      oDivDrop.addEventListener('dragleave',function(){
+        
+      })
+      oDivDrop.addEventListener('dragover',function(e){
+        e.preventDefault();
+      })
+      oDivDrop.addEventListener('drop',function(e){
+        e.preventDefault();
+        console.log(e)
+        oDivDrop.innerHTML = '将文件拖到此处上传';
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST','/upload',true);
+        let formData = new FormData();
+        
+        Array.from(e.dataTransfer.files).forEach(file=>{
+          formData.append('f1',file)
+        });
+        xhr.upload.onprogress=function(e){
+          console.log(e)
+          oDiv.style.width=100*(e.loaded/e.total) + '%';
+        }
+        xhr.send(formData);
+        xhr.onreadystatechange=function(){
+          if (xhr.readyState == 4) {
+            if(xhr.status == 200){
+              console.log(xhr.responseText)
+            }
+          }
+        }
+      })
+    }
+  </script>
+  <style>
+  .box{width: 200px; height: 10px; background: #ccc; position: relative}
+  #progress{position: absolute; background: #cfc;height: 100%}
+  .drop{width: 200px; height: 50px; border: 1px solid black}
+  </style>
+</head>
+<body>
+  <div class="box"><div id="progress"></div></div>
+  <input type="file" id="file1">
+  <input type="button" value="上传" id="btn1">
+  <div class="drop">
+    将文件拖到此处上传
+  </div>
+</body>
+</html>

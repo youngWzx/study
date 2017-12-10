@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{background: black;text-align: center}
+        canvas{background: white}
+    </style>
+    <script>
+        window.onload=function(){
+            var oC = document.getElementById('canvas');
+            var gd = oC.getContext('2d');
+            //var l = 0;
+            // setInterval(function(){
+            //     gd.clearRect(0,0,oC.width,oC.height)
+            //     gd.strokeRect(l,0,100,80)
+            //     l+=5;
+            // },500)
+            var x=100,y=100,w=100,h =100;
+            var n=0;
+            function rotate(x,y,w,h){
+                gd.save()
+                gd.clearRect(0,0,oC.width,oC.height);
+                
+                gd.translate(x+w/2,y+h/2)
+                gd.rotate(d2a(n));
+                gd.rotate(0)
+                gd.fillStyle='#ccc'
+                gd.fillRect(0,0,oC.width,oC.height)
+                gd.strokeRect(-(w/2),-(h/2),w,h)
+                gd.restore()
+                n++;
+                console.log(n)
+            }
+            function d2a(n){
+                return n*Math.PI/180;
+            }
+            
+            setInterval(()=>rotate(x,y,w,h),500)
+            
+        }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="600px" height="450px"></canvas>
+</body>
+</html>

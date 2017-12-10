@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    function d2a(n){
+      return Math.PI*n/180;
+    }
+    window.onload=function(){
+      let oSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      oSvg.setAttribute('width', 800);
+      oSvg.setAttribute('height', 600);
+      let data=[200,100,500,300,400];
+      let colors=['#f66','#6f6','#66f','#f6f','#6ff'];
+      let cx = 200, cy = 200, r = 100;
+
+      function pie(start, end, color){
+        let oPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+        function calc(r){
+          let x1 = cx + r*Math.sin(d2a(start));
+          let y1 = cy - r*Math.cos(d2a(start));        
+          let x2 = cx + r*Math.sin(d2a(end));
+          let y2 = cy - r*Math.cos(d2a(end));
+          
+          oPath.setAttribute('d',`
+            M ${cx} ${cy}
+            L ${x1} ${y1}
+            A ${r} ${r} 0 ${end - start > 180 ? 1 : 0} 1 ${x2} ${y2}
+            Z 
+          `)
+        }
+        calc(r)
+        oPath.onmouseover = function(){
+          calc(r+30)
+        }
+        oPath.onmouseout = function(){
+          calc(r)
+        }
+        oPath.style.stroke='none';
+        oPath.style.fill=color;
+        oSvg.appendChild(oPath);
+      }
+      let sum = data.reduce((a,b)=>a+b);
+      let now=0;
+      data.forEach((item,index)=>{
+        let ang=360*item/sum;
+
+        pie(now, now+ang, colors[index]);
+
+        now+=ang;
+      });
+      // let oL = document.createElementNS("http://www.w3.org/2000/svg",'line');
+      // oL.setAttribute('x1',100);
+      // oL.setAttribute('y1',100);
+      // oL.setAttribute('x2',200);
+      // oL.setAttribute('y2',200);
+      // oL.style.stroke='#F66';
+      // oL.style.strokeWidth=10;
+      // oSvg.appendChild(oL);
+      document.body.appendChild(oSvg);
+    }
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

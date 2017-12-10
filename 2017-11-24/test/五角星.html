@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    body{background: black;text-align: center}
+    canvas{background: white}
+    </style>
+    <script>
+    function d2a(n){
+        return Math.PI*n/180;
+    } 
+    function sin(n){
+        return Math.sin(Math.PI*n/180);
+    }
+    function cos(n){
+        return Math.cos(Math.PI*n/180);
+    }
+    window.onload=function(){
+        var oC = document.getElementById('canvas');
+        var gd = oC.getContext('2d');
+        function draw(x,y,r){
+            //gd.moveTo(x,y);
+            gd.moveTo(x,y+r*(cos(18)+(sin(18)*cos(36)/sin(36))));
+            gd.lineTo(x+r*sin(18),y+r*cos(18));
+            gd.lineTo(x+r*(sin(18)+1),y+r*cos(18));
+
+        }
+    }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="600px" height="450px"></canvas>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{margin: 0; padding: 0; list-style: none}
+    /* body{overflow: hidden} */
+    html{font-size: 20px}
+    .wrap{background: #aaa;overflow: hidden}
+    .banner-wrap{background: #fff; width: 25rem; overflow: hidden; transform: translateY(0px)}
+    #banner{height: 7.8rem; width: 9999rem; transform: translateX(0px)}
+    .banner{height: 7.8rem; width: 25rem; float: left; line-height: 7.8rem; text-align: center;}
+    .l1{background: #66f}
+    .l2{background: #6f6}
+    .l3{background: #f66}
+    .l4{background: #ff6}
+    .l5{background: #6ff}
+  </style>
+  <script>
+    window.onload=function(){
+      document.documentElement.style.fontSize = 20*document.documentElement.clientWidth/500 + 'px';
+      let oDiv = document.querySelector('.banner-wrap');
+      let oUl = document.getElementById('banner');
+      let aLi = document.getElementsByClassName('banner');
+      let lfirst = aLi[0].cloneNode(true);
+      let lend = aLi[aLi.length - 1].cloneNode(true);
+      oUl.appendChild(lfirst);
+      oUl.insertBefore(lend, aLi[0]);
+      let banner_left = -oDiv.offsetWidth;
+      oUl.style.transform = `translateX(${banner_left}px)`
+      let banner_top = 0;
+      oDiv.addEventListener('touchstart', function(ev){
+        if (banner_left==0) {
+          console.log(aLi.length)
+          banner_left=-(aLi.length-2)*oDiv.offsetWidth;
+          oUl.style.transform=`translate(${banner_left}px)`;   
+        } else if (banner_left == -(aLi.length-1)*oDiv.offsetWidth) {
+          banner_left=-oDiv.offsetWidth;
+          oUl.style.transform=`translate(${banner_left}px)`;
+        }
+        let startX = ev.targetTouches[0].clientX;
+        let startY = ev.targetTouches[0].clientY;
+        let disX = startX - banner_left;
+        let disY = startY - banner_top;
+        let dir = '';
+        oDiv.style.transition='';
+        oUl.style.transition='';
+        ev.preventDefault();
+        function fnmove(ev){
+          let x = ev.targetTouches[0].clientX;
+          let y = ev.targetTouches[0].clientY;
+
+          ev.preventDefault();
+          if (!dir) {
+            if (Math.abs(x - startX) > 5) {
+              dir = 'x';
+            } else if (Math.abs(y - startY) > 5) {
+              dir = 'y';
+            }
+          } else {
+            if (dir == 'x') {
+              banner_left = ev.targetTouches[0].clientX - disX;
+              oUl.style.transform=`translateX(${banner_left}px)`;
+            } else {
+              banner_top = ev.targetTouches[0].clientY - disY;
+              if (banner_top>0) {
+                oDiv.style.transform=`translateY(${banner_top/3}px)`;
+              } else {
+                oDiv.style.transform=`translateY(${banner_top}px)`;
+              }            
+            }
+          }
+        }
+        function fnend(){
+          if (dir == 'x') {
+            let n = Math.round(banner_left/oDiv.offsetWidth);
+            banner_left = n*oDiv.offsetWidth;
+            oUl.style.transform=`translateX(${banner_left}px)`;
+            oUl.style.transition='0.6s all ease';
+          } else if (dir == 'y'){
+            if (banner_top>0) {
+              banner_top = 0;
+              oDiv.style.transform=`translateY(${banner_top}px)`;
+              oDiv.style.transition='0.6s all ease';
+            }
+          }
+          oDiv.removeEventListener('touchmove', fnmove);
+          oDiv.removeEventListener('touchend', fnend);
+        }
+        oDiv.addEventListener('touchmove', fnmove, false)
+        oDiv.addEventListener('touchend', fnend, false)
+      }, false)
+    }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner-wrap">
+      <ul id="banner">
+        <li class="banner l1">11</li>
+        <li class="banner l2">22</li>
+        <li class="banner l3">33</li>
+        <li class="banner l4">44</li>
+        <li class="banner l5">55</li>
+      </ul>
+      <ol>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+        <li>lala</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

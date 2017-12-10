@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, userscalable=no, initial-scale=1.0">
+    <script src="../hammer.js"></script>
+    <script src="./myHammer.js"></script>
+    <script>
+      window.onload=function(){
+        let hammer = new Hammer(document.querySelector('.box'),{});
+        let myhammer = new MyHammer(document.querySelector('.box'),{});
+        console.log(myhammer)
+        hammer.on('tap',function(ev){
+          console.log(ev)
+          console.log('点击了1')
+        })
+        hammer.on('tap',function(){
+          console.log('点击了2')
+        })
+        hammer.on('press',function(){
+          console.log('长按了')
+        })
+        hammer.on('swipe', function (){
+          console.log('滑动');
+        });
+
+        //按住拖拽
+        hammer.on('pan', function (ev){
+          console.log(ev)
+          console.log('拖拽');
+        });
+      }
+    </script>
+    <style>
+      .box{width: 100px; height: 100px; background: #ccc}
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

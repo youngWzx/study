@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{background: black;text-align: center}
+        canvas{background: white}
+    </style>
+    <script>
+        window.onload=function(){
+            var oC = document.getElementById('canvas');
+            var gd = oC.getContext('2d');
+            let oImg = new Image();
+            oImg.src='./1.png';
+            oImg.onload=function(){
+                let imageData = gd.getImageData(0,0,oC.width,oC.height);
+
+                alert(imageData.data)
+                gd.drawImage(oImg,0,0);
+            }
+        }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="600px" height="450px"></canvas>
+</body>
+</html>

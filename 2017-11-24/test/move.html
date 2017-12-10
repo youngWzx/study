@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{height: 200px; width: 200px;position: absolute; left:-200px;background: red}
+        span{position: absolute;right: -20px;background: blue;width: 20px;line-height: 20px;height: 60px;top: 70px;}
+    </style>
+    <script>
+        var timer = null;
+        window.onload=function(){
+            if(window.navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function(res){
+                    console.log(res);
+                },function(err){
+                    console.log(err)
+                })
+            }else{
+                alert('你的浏览器不支持定位')
+            }
+            var oDiv = document.getElementsByTagName('div')[0];
+            oDiv.onmouseover=function(){
+                timer && clearInterval(timer)
+                timer=setInterval(function(){
+                    move(0)
+                },30)
+            }
+            oDiv.onmouseout=function(){
+                timer && clearInterval(timer)
+                timer=setInterval(function(){
+                    move(-200)
+                },30)
+            }
+            function move(iTarget){                
+                var speed = (iTarget - oDiv.offsetLeft)/6;
+                speed = speed>0?Math.ceil(speed):Math.floor(speed);
+                if (iTarget != oDiv.offsetLeft) {
+                    oDiv.style.left = oDiv.offsetLeft+speed+'px';
+                } else {
+                    clearInterval(timer)
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <span>分享到</span>
+    </div> 
+</body>
+</html>

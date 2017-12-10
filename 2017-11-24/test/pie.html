@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    body{background: black;text-align: center}
+    canvas{background: white}
+    </style>
+    <script>
+    function d2a(n){
+        return 2*Math.PI*n/360
+    }
+    window.onload=function(){
+        var oC = document.getElementById('canvas');
+        var gd = oC.getContext('2d');
+        var data=[100,200,300,400];
+        var sum = data.reduce((temp,item,index)=>temp+item)
+        var degree = data.map((item,index)=>360*item/sum);
+        var start =0;
+        degree.forEach(item => {
+            gd.beginPath();
+            gd.moveTo(300,225);
+            gd.lineTo(300+100*(Math.sin(d2a(start))),225-100*(Math.cos(d2a(start))));
+            gd.arc(300,225,100,d2a(start-90),d2a(start+item-90),false)
+            gd.closePath();
+            gd.stroke()
+            //gd.fill();
+            start+=item;
+        });
+    }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="600px" height="450px"></canvas>
+</body>
+</html>

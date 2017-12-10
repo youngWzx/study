@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./js/iscroll-probe.js"></script>
+  <script>
+    window.onload=function(){
+      let oDiv = document.querySelector('.refresh');
+      let iscroll = new IScroll('.wrap',{probeType:2});
+      iscroll.on('scroll',function(){
+        if (iscroll.y > 100) {
+          oDiv.innerHTML='松开刷新';
+        } else {
+          oDiv.innerHTML='下拉刷新';
+        }
+        console.log(iscroll);
+      })
+    }
+  </script>
+  <style>
+    .wrap{height: 300px; width: 300px; overflow: hidden;background: #ccc;margin: 50px auto 0px; position: relative}
+    .content{height: 800px;width: 800px; background: linear-gradient(#f66,#66f);z-index: 2;position: relative;top: 30px;}
+    .refresh{position: absolute; left: 0; top: 0 ;z-index: 1;text-align: center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="content"></div>
+    <div class="refresh">
+      下拉刷新
+    </div>
+  </div>
+</body>
+</html>

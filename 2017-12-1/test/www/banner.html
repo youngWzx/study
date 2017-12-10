@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{margin: 0;padding: 0;list-style: none}
+    html{font-size: 20px}
+    .wrap{background: #ccc}
+    .content{background: #FFF;}
+    .banner {height: 7.8rem; width: 25rem; overflow: hidden}
+    #banner{height: 7.8rem; width: 9999rem;}
+    .banner li{height: 7.8rem; width: 25rem;float: left; line-height: 7.8rem; text-align: center}
+  </style>
+  <script>
+    window.onload=function(){
+      document.documentElement.style.fontSize = 20*document.documentElement.clientWidth/500 + 'px';
+      let oDiv = document.querySelector('.banner');
+      let oUl = document.getElementById('banner');
+      let banner_left = 0;
+      let banner_top = 0;
+      oDiv.addEventListener('touchstart', function(ev){
+        let dir = '';
+        let startX = ev.targetTouches[0].clientX;
+        let startY = ev.targetTouches[0].clientY; 
+        let disX = startX - banner_left;
+        let disY = startY - banner_top;
+        function fnmove(ev){
+          if (!dir) {
+            if (Math.abs()) {
+              
+            }
+          } else {
+            
+          }
+          banner_left = ev.targetTouches[0].clientX - disX;
+          banner_top = ev.targetTouches[0].clientY - disY;
+          
+        }
+        oDiv.addEventListener('touchmove', fnmove, false);
+        oDiv.addEventListener('touchend', fnend, false);
+      }, false);
+    }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="content">
+      <div class="banner">
+        <ul id="banner">
+          <li style="background:#66f">111</li>
+          <li style="background:#6f6">222</li>
+          <li style="background:#f66">333</li>
+          <li style="background:#6ff">444</li>
+          <li style="background:#ff6">555</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
