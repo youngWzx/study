@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="raphael.js"></script>
+  <script>
+    window.onload=function(){
+      var paper = Raphael(0,50,800,600);
+      var oBtn = document.getElementById('btn');
+      var types = ['linear','easeIn','easeInOut','easeOut','backIn','backInOut','backOut','elastic','bounce'];
+      var aRect = types.map((type,index)=>{
+        let rect = paper.rect(10,60*index,50,50);
+        rect.attr('fill', '#66f');
+        rect.attr('stroke-width','10px')
+        return rect;
+      })
+      oBtn.onclick=function(){
+        aRect.forEach((rect,index)=>{
+          rect.animate({'x': 600}, 5000, types[index]);
+        })
+      }
+    }
+  </script>
+</head>
+<body>
+  <input type="button" value="666" id="btn">
+</body>
+</html>

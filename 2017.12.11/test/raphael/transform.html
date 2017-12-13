@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="raphael.js"></script>
+  <script>
+    window.onload=function(){
+      var paper = Raphael(0,0,800,600);
+      var rect = paper.rect(50,50,100,50);
+      rect.attr({fill:'#6ff'});
+      rect.click(function(){
+        this.attr('transform','t -50,-50 s 2,2 r 45')
+      })
+    }
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
