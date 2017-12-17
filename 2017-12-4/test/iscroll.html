@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <script src="./js/iscroll-probe.js"></script>
+  <script src="./js/scroll.js"></script>
   <script>
     window.onload=function(){
       let oDiv = document.querySelector('.refresh');
-      let iscroll = new IScroll('.wrap',{probeType:2});
+      let iscroll = new Scroll('.wrap',{probeType:2});
       iscroll.on('scroll',function(){
         if (iscroll.y > 100) {
           oDiv.innerHTML='松开刷新';
