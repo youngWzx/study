@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box{width: 800px; height: 600px; margin:0 auto}
+  </style>
+  <script src="../echarts.js"></script>
+  <script>
+    const $ = document.querySelectorAll.bind(document);
+    window.onload=function(){
+      let oBox = $('.box')[0];
+      let option={
+        title:{
+          text:'666',
+        },
+        legend: {
+          data: ['角色', '敌人'],
+          right: 0,
+          top: '50%',
+          orient: 'vertical'
+        },
+        radar:{
+          indicator:[
+            {name:'HP', max:9999},
+            {name:'攻击', max:99},
+            {name:'防御',max:99},
+            {name:'魔法',max:99},
+          ]
+        },
+        series:[{
+          name:'属性',
+          type:'radar',
+          data:[{
+            name:'角色',
+            value:[1570,23,65,17]
+          },{
+            name:'敌人',
+            value:[2300,89,76,65]
+          }]
+        }]
+      }
+
+      let chart = echarts.init(oBox);
+      chart.setOption(option)
+    }
+  </script>
+</head>
+<body>
+  <div class="box"></div>
+</body>
+</html>
