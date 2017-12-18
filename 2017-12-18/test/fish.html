@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body{background: black; text-align: center}
+    #c1{background: url(../img/game_bg_2_hd.jpg) no-repeat}
+  </style>
+  <script>
+    const resources={
+      fish1: '../img/fish1.png',
+      fish2: '../img/fish2.png',
+      fish3: '../img/fish3.png',
+      fish4: '../img/fish4.png',
+      fish5: '../img/fish5.png',
+      coin1: '../img/coinAni1.png',
+      cannon1: '../img/cannon1.png',
+      cannon2: '../img/cannon2.png',
+      cannon3: '../img/cannon3.png',
+      cannon4: '../img/cannon4.png',
+      cannon5: '../img/cannon5.png',
+      cannon6: '../img/cannon6.png',
+      cannon7: '../img/cannon7.png',
+      bottom: '../img/bottom.png'
+    };
+
+    function loadImgs(json, cb){
+      let count = 0;
+      let loadCount = 0;
+      let imgs = {};
+
+      for (let name in json){
+        count++;
+        let oImg = new Image();
+        oImg.src = json[name];
+
+        oImg.onload = function(){
+          loadCount++;
+          imgs[name] = oImg;
+          if (count == loadCount) {
+            cb(imgs)
+          }
+        }
+
+        oImg.onerror = function(){
+          alert('加载图片失败'+oImg.src)
+        }
+      }
+    }
+    window.onload=function(){
+      let oC = document.getElementById('c1');
+      let gd = oC.getContext('2d');
+      loadImgs(resources, function(imgs){
+        console.log(imgs)
+      })
+    }
+  </script>
+</head>
+<body>
+  <canvas id='c1' width="800px" height="600px"></canvas>
+</body>
+</html>
