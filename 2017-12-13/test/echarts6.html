@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box{width: 800px; height: 600px; margin: 0 auto}
+    .box div{width: 50%; height:100%; float: left}
+  </style>
+  <script src="../echarts.js"></script>
+  <script>
+    const $ = document.querySelectorAll.bind(document);
+    window.onload=function(){
+      let oBox1 = $('.box .box1')[0];
+      let oBox2 = $('.box .box2')[0];
+      let datas = [{
+        name: '北京',
+        value: 1500,
+        children:[{
+          name: '大北京',
+          value: 800,
+        },{
+          name: '中北京',
+          value: 500,
+        },{
+          name: '小北京',
+          value:200,
+        }]
+      },{
+        name: '东北',
+        value: 1500,
+        children:[{
+          name: '大东北',
+          value: 800,
+        },{
+          name: '中东北',
+          value: 500,
+        },{
+          name: '小东北',
+          value:200,
+        }]
+      },{
+        name: '浙江',
+        value: 1500,
+        children:[{
+          name: '大浙江',
+          value: 800,
+        },{
+          name: '中浙江',
+          value: 500,
+        },{
+          name: '小浙江',
+          value:200,
+        }]
+      }]
+ 
+      let option = {
+        title:{
+          text:'各省数据',
+        },
+        series:{
+          name:'各省数据',
+          type:'pie',
+          radius:'50%',
+          data:datas.map(json=>({name:json.name, value:json.value}))
+        }
+      }
+
+      let chart1 = echarts.init(oBox1);
+      chart1.setOption(option);
+
+      let chart2 = echarts.init(oBox2);
+
+      chart1.on('mouseover', function(ev){
+        setChildren(ev.name)
+      })
+
+      function setChildren(name){
+        let data= null;
+        datas.some(json=>{
+          if (json.name == name) {
+            data = json
+          }
+          return json.name == name;
+        });
+        let option={
+          title:{
+            text: `${name}数据`,
+          },
+          xAxis:{
+            data:data.children.map(json=>json.name),
+            type:'category',
+          },
+          yAxis:{
+            //data:data.children.map(json=>json.value);
+            type:'value'
+          },
+          series:{
+            name:'',
+            type:'bar',
+            data:data.children.map(json=>json.value)
+          }
+        }
+
+        chart2.setOption(option);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="box">
+    <div class="box1"></div>
+    <div class="box2"></div>
+  </div>
+</body>
+</html>
