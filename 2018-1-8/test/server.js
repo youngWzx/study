@@ -16,7 +16,7 @@ const db = mysql.createPool({
   user: config.mysql_user, 
   password: config.mysql_password,
   port: config.mysql_port, 
-  dbname: config.dbname
+  database: config.mysql_dbname
 });
 
 //中间件
