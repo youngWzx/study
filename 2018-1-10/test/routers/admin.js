@@ -96,7 +96,7 @@ router.get('/',(req,res)=>{
 })
 
 router.get('/house',(req,res)=>{
-  let {current,size} = req.query;
+  let {current,size, keywords} = req.query;
   if (!current) {
     current = 1;
   } else if (!/^[1-9]\d*$/.test(current)) {
@@ -104,17 +104,27 @@ router.get('/house',(req,res)=>{
   } 
 
   if (!size) {
-    size = 1;
+    size = 10;
   } else if (!/^[1-9]\d*$/.test(size)) {
-    size = 1;
+    size = 10;
   } 
 
+  let like_seg = '1=1';
+  if (keywords) {
+    let keys = keywords.split(/\s+/g);
+    like_seg = keys.map(item=>`title LIKE '${item}'`).join(' OR ');
+  }
+  console.log(like_seg);
   req.db.query(`SELECT ID,title,ave_price,tel FROM house_table LIMIT ${(current-1)*size},${size}`, (err,data)=>{
     if (err) {
+      console.log(err)
       res.sendStatus(500);
     } else {
       req.db.query(`SELECT COUNT(*) AS c FROM house_table`, (err,count)=>{
         if (err) {
+          res.sendStatus(500);
+          console.log(err)
+        } else if (count.length == 0) {
           res.sendStatus(500);
         } else {
           console.log(count[0].c);
@@ -131,14 +141,20 @@ router.get('/house',(req,res)=>{
 })
 
 router.post('/house',(req,res)=>{
+  console.log(req.body)
+  console.log(req.files)
   //处理时间类型
   req.body['sale_time'] = Math.floor(new Date(req.body['sale_time']).getTime()/1000);
   req.body['submit_time'] = Math.floor(new Date(req.body['submit_time']).getTime()/1000);
-  
+  console.log('***')
+
   let aImg = [];
   let aImgRealPath = [];
+  console.log('***')
 
   for (let i = 0; i < req.files.length; i++) {
+    console.log('***')
+
     switch (req.files[i].fieldname) {
       case 'main_img':
         req.body['main_img_path'] = req.files[i].filename;
@@ -155,6 +171,8 @@ router.post('/house',(req,res)=>{
       default:
         break;
     }
+  }
+    console.log('***')
 
     req.body['img_paths'] = aImg.join(',');
     req.body['img_real_paths'] = aImgRealPath.join(',');
@@ -182,7 +200,83 @@ router.post('/house',(req,res)=>{
       }
     })
   }
-})
+)
+
+/*
+router.post('/house', (req, res)=>{
+  //console.log();
+  //console.log(req.files);
+
+  //时间
+  req.body['sale_time']=req.body['sale_time']?Math.floor(new Date(req.body['sale_time']).getTime()/1000):'';
+  req.body['submit_time']=req.body['submit_time']?Math.floor(new Date(req.body['submit_time']).getTime()/1000):'';
+
+  if(req.body['is_mod']=='true'){
+    const fields=['title','sub_title','position_main','position_second','ave_price','area_min','area_max','tel','sale_time','submit_time','building_type','property_types'];
+
+    let arr=[];
+    fields.forEach(key=>{
+      arr.push(`${key}='${req.body[key]}'`);
+    });
+
+    let sql=`UPDATE house_table SET ${arr.join(',')} WHERE ID='${req.body['old_id']}'`;
+
+    req.db.query(sql, err=>{
+      if(err){
+        res.sendStatus(500);
+      }else{
+        res.redirect('/admin/house');
+      }
+    });
+  }else{
+    let aImgPath=[];
+    let aImgRealPath=[];
+
+    for(let i=0;i<req.files.length;i++){
+      switch(req.files[i].fieldname){
+        case 'main_img':
+          req.body['main_img_path']=req.files[i].filename;
+          req.body['main_img_real_path']=req.files[i].path.replace(/\\/g, '\\\\');
+          break;
+        case 'img':
+          aImgPath.push(req.files[i].filename);
+          aImgRealPath.push(req.files[i].path.replace(/\\/g, '\\\\'));
+          break;
+        case 'property_img':
+          req.body['property_img_paths']=req.files[i].filename;
+          req.body['property_img_real_paths']=req.files[i].path.replace(/\\/g, '\\\\');
+          break;
+      }
+    }
+
+    req.body['ID']=common.uuid();
+    req.body['admin_ID']=req.admin_ID;
+
+    req.body['img_paths']=aImgPath.join(',');
+    req.body['img_real_paths']=aImgRealPath.join(',');
+
+    //看看
+    let arrField=[];
+    let arrValue=[];
+
+    for(let name in req.body){
+      arrField.push(name);
+      arrValue.push(req.body[name]);
+    }
+
+    let sql=`INSERT INTO house_table (${arrField.join(',')}) VALUES('${arrValue.join("','")}')`;
+    console.log(sql);
+
+    req.db.query(sql, err=>{
+      if(err){
+        console.log(err);
+        res.sendStatus(500);
+      }else{
+        res.redirect('/admin/house');
+      }
+    });
+  }
+});*/
 
 router.get('/house/delete', (req,res)=>{
   const aId = req.query['id'].split(',');

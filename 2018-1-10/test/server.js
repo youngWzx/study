@@ -42,7 +42,7 @@ server.set('views', './template');
 
 //
 server.use((req,res,next)=>{
-  console.log(req.url)
+  //console.log(req.url)
   req.db = db;
   next();
 })
