@@ -1,5 +1,6 @@
 const express = require('express');
 const config = require('../config');
+const fs = require('fs');
 const common = require('../libs/common');
 
 let router = express.Router();
@@ -8,7 +9,6 @@ module.exports = router;
 
 //校验身份
 router.use((req,res,next)=>{
-  console.log(req.path)
   if (!req.cookies['admin_token'] && req.path!='/login') {
     res.redirect(`/admin/login?ref=${req.url}`);
   } else{
@@ -21,7 +21,7 @@ router.use((req,res,next)=>{
         } else if (data.length == 0) {
           res.redirect(`/admin/login?ref=${req.url}`)
         } else{
-          req.admin_ID=data[0]['admin_table'];
+          req.admin_ID=data[0]['admin_ID'];
           next();
         }
       })
@@ -110,6 +110,132 @@ router.post('/house',(req,res)=>{
   req.body['sale_time'] = Math.floor(new Date(req.body['sale_time']).getTime()/1000);
   req.body['submit_time'] = Math.floor(new Date(req.body['submit_time']).getTime()/1000);
   
-  console.log(req.body);
-  console.log(req.files)
+  let aImg = [];
+  let aImgRealPath = [];
+
+  for (let i = 0; i < req.files.length; i++) {
+    switch (req.files[i].fieldname) {
+      case 'main_img':
+        req.body['main_img_path'] = req.files[i].filename;
+        req.body['main_img_real_path'] = req.files[i].path.replace(/\\/g, '\\\\');
+        break;
+      case 'img':
+        aImg.push(req.files[i].filename);
+        aImgRealPath.push(req.files[i].path.replace(/\\/g,'\\\\'));
+        break;
+      case 'property_img':
+        req.body['property_img_paths'] = req.files[i].filename;
+        req.body['property_img_real_paths'] = req.files[i].path.replace(/\\/g,'\\\\');
+        break;
+      default:
+        break;
+    }
+
+    req.body['img_paths'] = aImg.join(',');
+    req.body['img_real_paths'] = aImgRealPath.join(',');
+
+    req.body['ID'] = common.uuid();
+    req.body['admin_ID'] = req.admin_ID;
+
+    let keys = [];
+    let values = [];
+
+    for(let key in req.body){
+      keys.push(key);
+      values.push(req.body[key]);
+    }
+
+    let sql = `INSERT INTO house_table (${keys.join(',')}) VALUES ('${values.join("','")}')`
+    console.log(sql);
+
+    req.db.query(sql,err=>{
+      if (err) {
+        console.log(err)
+        res.sendStatus(500);
+      } else {
+        res.redirect('/admin/house')
+      }
+    })
+  }
+})
+
+router.get('/house/delete', (req,res)=>{
+  const aId = req.query['id'].split(',');
+console.log(aId)
+  let j = 0; 
+  nextDelete();
+  function nextDelete() {
+    const id = aId[j];
+    req.db.query(`SELECT main_img_real_path,img_real_paths,property_img_real_paths from house_table WHERE ID='${id}'`, (err,data)=>{
+      if (err) {
+        console.log(err)
+        res.sendStatus(500)
+      } else {
+        //
+        let deleteFile = [];
+        let temp = [];
+        data[0]['main_img_real_path'] && deleteFile.push(data[0]['main_img_real_path']);
+        console.log(deleteFile)
+
+        temp = data[0]['img_real_paths']&&data[0]['img_real_paths'].split(',');
+
+        if (temp) {
+          deleteFile = deleteFile.concat(temp);
+        }
+        console.log(temp)
+        temp = data[0]['property_img_real_paths']&&data[0]['property_img_real_paths'].split(',');
+        console.log(temp)
+
+        if (temp) {
+          deleteFile = deleteFile.concat(temp);
+        }
+
+console.log(deleteFile)
+        let i = 0;
+        nextDeleteFile();
+        function nextDeleteFile(){
+          if (!deleteFile[i]) {
+            req.db.query(`DELETE from house_table WHERE ID='${id}'`, err=>{
+              if (err) {
+                console.log(err)
+                res.sendStatus(500)
+              } else {
+                j++;
+                if (j == aId.length) {
+                  res.redirect('/admin/house');
+                } else {
+                  nextDelete();
+                }
+              }
+            })
+          } else {
+          fs.unlink(deleteFile[i], err=>{
+            if (err) {
+              console.log(err)
+              res.sendStatus(500);
+            } else {
+              i++;
+              if (i == deleteFile.length) {
+                req.db.query(`DELETE from house_table WHERE ID='${id}'`, err=>{
+                  if (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                  } else {
+                    j++;
+                    if (j == aId.length) {
+                      res.redirect('/admin/house');
+                    } else {
+                      nextDelete();
+                    }
+                  }
+                })
+              } else {
+                nextDeleteFile()
+              }
+            }
+          })}
+        }
+      }
+    })
+  }
 })

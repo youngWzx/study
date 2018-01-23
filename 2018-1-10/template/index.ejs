@@ -240,7 +240,7 @@
         alert('请选择要删除的东西');
       }else{
         let url=`/admin/house/delete?id=${encodeURIComponent(arr.join(','))}`;
-
+        console.log(url)
         if(confirm(`您真的要删除这${arr.length}条数据吗?`)){
           window.location=url;
         }
