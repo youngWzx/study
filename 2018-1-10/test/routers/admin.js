@@ -115,12 +115,12 @@ router.get('/house',(req,res)=>{
     like_seg = keys.map(item=>`title LIKE '${item}'`).join(' OR ');
   }
   console.log(like_seg);
-  req.db.query(`SELECT ID,title,ave_price,tel FROM house_table LIMIT ${(current-1)*size},${size}`, (err,data)=>{
+  req.db.query(`SELECT ID,title,ave_price,tel FROM house_table WHERE ${like_seg} LIMIT ${(current-1)*size},${size}`, (err,data)=>{
     if (err) {
       console.log(err)
       res.sendStatus(500);
     } else {
-      req.db.query(`SELECT COUNT(*) AS c FROM house_table`, (err,count)=>{
+      req.db.query(`SELECT COUNT(*) AS c FROM house_table WHERE ${like_seg}`, (err,count)=>{
         if (err) {
           res.sendStatus(500);
           console.log(err)
@@ -140,65 +140,110 @@ router.get('/house',(req,res)=>{
   })
 })
 
+router.get('/house/get_data',(req,res)=>{
+  const{id} = req.query;
+
+  if (!id) {
+    res.sendStatus(404);
+  } else if (!/^[\da-f]{32}$/.test(id)) {
+    res.sendStatus(404);
+  } else {
+    req.db.query(`SELECT * FROM house_table WHERE ID='${id}'`, (err,data)=>{
+      if (err) {
+        res.sendStatus(500);
+      } else if (data.length == 0) {
+        res.sendStatus(404);
+      } else {
+        res.send(data[0])
+      }
+    })
+  }
+})
+
 router.post('/house',(req,res)=>{
   console.log(req.body)
   console.log(req.files)
+  
   //处理时间类型
   req.body['sale_time'] = Math.floor(new Date(req.body['sale_time']).getTime()/1000);
   req.body['submit_time'] = Math.floor(new Date(req.body['submit_time']).getTime()/1000);
   console.log('***')
 
-  let aImg = [];
-  let aImgRealPath = [];
-  console.log('***')
+  if (req.body['isMod'] == 'true') {
+    const fields=['title','sub_title','position_main','position_second','ave_price','area_min','area_max','tel','sale_time','submit_time','building_type','property_types'];
+    let arr = [];
 
-  for (let i = 0; i < req.files.length; i++) {
-    console.log('***')
+    fields.forEach(key=>{
+      arr.push(`${key}='${req.body[key]}'`);
+    })
 
-    switch (req.files[i].fieldname) {
-      case 'main_img':
-        req.body['main_img_path'] = req.files[i].filename;
-        req.body['main_img_real_path'] = req.files[i].path.replace(/\\/g, '\\\\');
-        break;
-      case 'img':
-        aImg.push(req.files[i].filename);
-        aImgRealPath.push(req.files[i].path.replace(/\\/g,'\\\\'));
-        break;
-      case 'property_img':
-        req.body['property_img_paths'] = req.files[i].filename;
-        req.body['property_img_real_paths'] = req.files[i].path.replace(/\\/g,'\\\\');
-        break;
-      default:
-        break;
-    }
-  }
-    console.log('***')
-
-    req.body['img_paths'] = aImg.join(',');
-    req.body['img_real_paths'] = aImgRealPath.join(',');
-
-    req.body['ID'] = common.uuid();
-    req.body['admin_ID'] = req.admin_ID;
-
-    let keys = [];
-    let values = [];
-
-    for(let key in req.body){
-      keys.push(key);
-      values.push(req.body[key]);
-    }
-
-    let sql = `INSERT INTO house_table (${keys.join(',')}) VALUES ('${values.join("','")}')`
+    let sql = `UPDATE house_table SET ${arr.join(',')} WHERE ID='${req.body['oldId']}'`;
     console.log(sql);
-
-    req.db.query(sql,err=>{
+    
+    req.db.query(sql, err=>{
       if (err) {
-        console.log(err)
+        console.log(err);
         res.sendStatus(500);
       } else {
-        res.redirect('/admin/house')
+        res.redirect('/admin/house');
       }
     })
+  } else {
+    let aImg = [];
+    let aImgRealPath = [];
+    console.log('***')
+
+    for (let i = 0; i < req.files.length; i++) {
+      console.log('***')
+
+      switch (req.files[i].fieldname) {
+        case 'main_img':
+          req.body['main_img_path'] = req.files[i].filename;
+          req.body['main_img_real_path'] = req.files[i].path.replace(/\\/g, '\\\\');
+          break;
+        case 'img':
+          aImg.push(req.files[i].filename);
+          aImgRealPath.push(req.files[i].path.replace(/\\/g,'\\\\'));
+          break;
+        case 'property_img':
+          req.body['property_img_paths'] = req.files[i].filename;
+          req.body['property_img_real_paths'] = req.files[i].path.replace(/\\/g,'\\\\');
+          break;
+        default:
+          break;
+      }
+    }
+      console.log('***')
+
+      req.body['img_paths'] = aImg.join(',');
+      req.body['img_real_paths'] = aImgRealPath.join(',');
+
+      req.body['ID'] = common.uuid();
+      req.body['admin_ID'] = req.admin_ID;
+
+      let keys = [];
+      let values = [];
+
+      for(let key in req.body){
+        if (key == 'isMod' || key =="oldId") {
+          continue;
+        }
+        keys.push(key);
+        values.push(req.body[key]);
+      }
+
+      let sql = `INSERT INTO house_table (${keys.join(',')}) VALUES ('${values.join("','")}')`
+      console.log(sql);
+
+      req.db.query(sql,err=>{
+        if (err) {
+          console.log(err)
+          res.sendStatus(500);
+        } else {
+          res.redirect('/admin/house')
+        }
+      })
+    }
   }
 )
 

@@ -99,7 +99,7 @@
               <td><%=json.ave_price%></td>
               <td><%=json.tel%></td>
               <td>
-                <a href="javascript:;">编辑</a>
+                <a href="javascript:;" onclick="modHouse('<%=json.ID%>')">编辑</a>
                 <a href="/admin/house/delete?id=<%=json.ID%>" onclick="return confirm('你确定删除这个房屋信息么，删除不可恢复')">删除</a>
               </td>
             </tr>
@@ -119,8 +119,9 @@
       </div>
       <div class="panel-body" style="overflow:auto; height:460px;">
         <form class="form-horizontal" method="post" action="?" enctype="multipart/form-data">
+          <input type="hidden" id="isMod" name="isMod" value="false">
+          <input type="hidden" id="oldId" name="oldId" value="">
           <div id="form_contrainer">
-
           </div>
           <!-- <div class="form-group">
             <label for="id1" class="col-sm-2 control-label">数据1</label>
@@ -173,8 +174,25 @@
     </div>
 
     <script>
-      const $ = document.querySelectorAll.bind(document);
-      
+      //const $ = document.querySelectorAll.bind(document);
+      function modHouse(id){
+        $.ajax({
+          url:'/admin/house/get_data',
+          method:'GET',
+          data:{id},
+          dataType:'json',
+          success(json){
+            oShadow.style.display = 'block';
+            oDialog.style.display = 'block';
+            createForm(json);
+            $('#isMod')[0].value='true';
+            $('#oldId')[0].value=id;
+          },
+          error(err){
+            alert(err)
+          }
+        })
+      }
       let oShadow = $('#shadow')[0];
       let oDialog = $('#dialog')[0];
       let oBtnAdd = $('#btn_add')[0];
@@ -185,6 +203,9 @@
       oBtnAdd.onclick = function(){
         oShadow.style.display = 'block';
         oDialog.style.display = 'block';
+        createForm();
+        $('#isMod')[0].value='false';
+        $('#oldId')[0].value='';
       }
 
       oBtnCancel.onclick = oBtnClose.onclick = function(){
@@ -211,25 +232,50 @@
         {type:'text', name:'property_types', title:'户型'},
         {type:'file', name:'property_img', title:'户型'}
       ];
-
-      oFormContrainer.innerHTML = '';
-
-      for (let i = 0; i < form_inputs.length; i++) {
-        let data = form_inputs[i];
-        let oDiv = document.createElement('div');
-        oDiv.className = 'form-group';
-        oDiv.innerHTML = 
-        `
-          <label for='id${i}' class="col-sm-2 control-label">${data.title}</label>
-          <div class="col-sm-10">
-            <input type="${data.type}" name="${data.name}" id="id${i}" ${data.multiple?'multiple':''}
-            class="form-control" placeholder="请输入${data.title}...">
-          </div>
-        `
-
-        oFormContrainer.appendChild(oDiv);
+      function toDou(item){
+        return item<9?'0'+item:''+item;
       }
 
+      function createForm(house={}){
+        oFormContrainer.innerHTML = '';
+        const{sale_time, submit_time} = house;
+
+        for (let i = 0; i < form_inputs.length; i++) {
+          let data = form_inputs[i];
+          let oDiv = document.createElement('div');
+          oDiv.className = 'form-group';
+          oDiv.innerHTML = 
+          `
+            <label for='id${i}' class="col-sm-2 control-label">${data.title}</label>
+            <div class="col-sm-10">
+              <input type="${data.type}" name="${data.name}" id="id${i}" ${data.multiple?'multiple':''}
+              class="form-control" placeholder="请输入${data.title}..." value="${house[data.name]||''}">
+            </div>
+          `
+
+          oFormContrainer.appendChild(oDiv);
+
+          if (data.name == 'sale_time' && sale_time) {
+            const date = new Date(sale_time*1000);
+            const value = `${date.getFullYear()}-${toDou(date.getMonth()+1)}-${toDou(date.getDay())}`;
+            console.log(value);
+           console.log(document.getElementById(`id${i}`))
+           $(`#id${i}`)[0].value = value;
+          }
+
+          if (data.name == 'submit_time' && submit_time) {
+            const date = new Date(submit_time*1000);
+            const value = `${date.getFullYear()}-${toDou(date.getMonth()+1)}-${toDou(date.getDay())}`;
+            console.log(value);
+
+            $(`#id${i}`)[0].value = value;
+          }
+        }
+
+        
+      }
+
+     
       oBtnDel.onclick = function(){
         const aCheck = document.getElementsByName('ID_check');
         let arr = [];
