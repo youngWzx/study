@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue.js"></script>
+  <script src="../vue-router.js"></script>
+  <script>
+    window.onload=function(){
+      let router = new VueRouter({
+        routes:[
+          {path:'/article',component:{template:'<div>文章</div>'}},
+          {path:'/user',component:{template:'<div>用户</div>'}},
+        ]
+      });
+
+      let vm = new Vue({
+        el:'#div1',
+        router,
+      })
+    }
+  </script>
+  <style>
+    .my-link{color: black; text-decoration: none; padding: 6px 4px; border: 1px solid #ccc}
+    .router-link-active {color:blue}
+  </style>
+</head>
+<body>
+  <div id='div1'>
+    <router-link class="my-link" to='/user'>用户</router-link>
+    <router-link class="my-link" to='/article'>文件</router-link>
+    <router-view></router-view>
+  </div>
+</body>
+</html>

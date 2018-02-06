@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue.js"></script>
+  <script src="../vue-router.js"></script>
+  <script>
+    window.onload=function(){
+      let router = new VueRouter({
+        routes:[
+          {path:'/use/:id',component:{template:'<div>{{$route.params.id}}</div>'}}
+        ]
+      })
+
+      let vm = new Vue({
+        el:'#div1',
+        router,
+        watch:{
+          '$route'(oldVal, newVal){
+            console.log(`从${oldVal.params.id}变成了${newVal.params.id}`);
+          }
+        }
+      })
+    }
+  </script>
+</head>
+<body>
+  <div id="div1">
+    <router-link to="/use/1231">用户1</router-link>
+    <router-link to="/use/23234">用户2</router-link>
+    <router-link to="/use/2343257">用户3</router-link>
+    <router-view></router-view>
+  </div>
+</body>
+</html>

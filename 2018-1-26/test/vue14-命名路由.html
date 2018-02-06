@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue.js"></script>
+  <script src="../vue-router.js"></script>
+  <script>
+    window.onload=function(){
+      let router = new VueRouter({
+        routes:[
+          {path:'/user', name:'usr', component:{template:'<div>用户</div>'}},
+          {path:'/article', component:{template:'<div>文章</div>'}},
+          {path:'/comment', component:{template:'<div>留言</div>'}}
+        ]
+      })
+
+      let vm = new Vue({
+        el:'#div1',
+        router,
+      })
+    }
+  </script>
+</head>
+<body>
+  <div id="div1">
+    <router-link :to="{name:'usr'}">用户</router-link>
+    <router-link :to="{path:'/article'}">文章</router-link>
+    <router-link to="comment">留言</router-link>
+    <router-view></router-view>
+  </div>
+</body>
+</html>

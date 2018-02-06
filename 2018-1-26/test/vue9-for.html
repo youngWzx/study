@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue.js"></script>
+  <script>
+    window.onload=function(){
+      let vm = new Vue({
+        el:'#div1',
+        data:{
+          arr:[1,2,3],
+          json:{
+            name:'dqwe',
+            age:20,
+          },
+          num:5,
+          str:'qwedqwe',
+          user:[{
+            name:'www',
+          },{
+            name:'zzz',
+          },{
+            name:'eee',
+          }]
+        }
+      })
+    }
+  </script>
+</head>
+<body>
+  <div id="div1">
+    <ul>
+      <li v-for='a in arr'>{{a}}</li>
+      <li v-for='val,key in json'>{{key}}:{{val}}</li>
+      <li v-for='a in num'>{{a}}</li>
+      <li v-for='a in str'>{{a}}</li>
+      <li v-for='obj in user' :key='obj.name'>{{obj.name}}</li>
+    </ul>
+  </div>
+</body>
+</html>
