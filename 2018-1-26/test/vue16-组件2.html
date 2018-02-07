@@ -8,16 +8,24 @@
   <script src="../vue.js"></script>
   <script>
     window.onload = function(){
-      Vue.component('cmp-test',{template:'<div>test</div>'});
-
       let vm = new Vue({
         el:'#div1',
+        components:{
+          'cmp-test':{template:'<div>test</div>'}
+        }
+      });
+
+      let vm1 = new Vue({
+        el:'#div2'
       })
     }
   </script>
 </head>
 <body>
   <div id="div1">
+    <cmp-test></cmp-test>
+  </div>
+  <div id="div2">
     <cmp-test></cmp-test>
   </div>
 </body>
