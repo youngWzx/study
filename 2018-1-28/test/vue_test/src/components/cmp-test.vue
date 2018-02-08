@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name:'cmp-test'
+  name: 'cmp-test'
 }
 </script>
