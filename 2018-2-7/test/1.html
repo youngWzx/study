@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<script src="./my-vue.js"></script>
+<script>
+  window.onload = function(){
+    let vm = new MyVue({
+      el: '.box',
+      data: {
+        a:1,
+        b:2,
+        name:'wzx',
+        age:25,
+      }
+    })
+  }
+</script>
+<body>
+  <div :title="a" class="box">
+    {{b}}
+    <div>{{name}}</div>
+    <div>{{age}}</div>
+  </div>
+</body>
+</html>
