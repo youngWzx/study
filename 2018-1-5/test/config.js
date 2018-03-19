@@ -1,6 +1,6 @@
 module.exports={
   //端口
-  port: 8080,
+  port: 8001,
 
   //数据库
   mysql_host: 'localhost',

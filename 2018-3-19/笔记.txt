@@ -1,0 +1,42 @@
+ts —— 改进版JS
+1.编译执行
+  tsc 1.ts  =>  1.js
+2.有类型
+  let str=12;
+  let str:string=12;      //×
+
+  function show(a: number){
+
+  }
+
+  function sum(a: number, b: number): number{
+
+  }
+
+  诡异的类型——any、never、...
+  enum
+3.泛型
+4.接口、abstract
+
+webpack：
+replace
+  import xxx
+  require
+
+--------------------------------------------------------------------------------
+
+eleme
+
+--------------------------------------------------------------------------------
+
+生命周期：
+1.beforeCreate    创建前
+2.created         刚创建完
+3.beforeMount     即将扔进页面
+4.mounted         刚刚扔进页面    完事
+5.beforeUpdate    更新前
+6.updated         更新完了
+7.beforeDestroy   销毁之前
+8.destroyed       已经销毁
+
+--------------------------------------------------------------------------------

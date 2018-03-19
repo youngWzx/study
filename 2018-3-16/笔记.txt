@@ -1,0 +1,73 @@
+ts介绍
+
+javascript——
+
+--------------------------------------------------------------------------------
+
+ts：运行在前端的Java
+1.安装编译器
+  >npm i -g typescript
+2.编译文件
+  >tsc xxx.ts
+
+没有类型
+
+--------------------------------------------------------------------------------
+
+1.限制类型——变量、函数
+  let xxx:类型;
+
+  常见：number,string,boolean,...
+  新的：any、泛型、enum、void、never
+  //类型断言——
+
+2.泛型
+  指定内部的东西的类型
+  any                   let arr:Array<any>
+  联合类型(union type)： let arr:Array<number|string>
+
+3.枚举类型
+
+  if(type=='ma1e')...
+  else if(type=='female')..
+  else
+
+  enum 类型{值1, 值2, ...}
+
+--------------------------------------------------------------------------------
+
+类：
+1.interface——接口
+2.
+
+模块化
+
+--------------------------------------------------------------------------------
+
+webpack原理
+vue-cli
+
+--------------------------------------------------------------------------------
+
+Symbol类型是什么:)有什么实际用途
+key
+
+--------------------------------------------------------------------------------
+
+vue-cli
+  vue init webpack xxxx   =>    下载https://github.com/vuejs-templates/webpack/tree/develop/template
+
+  npm run start           =>    webpack-dev-server --inline --progress --config build/webpack.dev.conf.js
+  npm run build
+
+  vue-cli只是一个下载器而已
+
+vue-loader
+  编译.vue -> .js
+
+--------------------------------------------------------------------------------
+
+webpack
+  编译
+
+my-webpack

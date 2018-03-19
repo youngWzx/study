@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" data-dpr="2" style="font-size: 37.5px;">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="format-detection" content="telephone=no, email=no" />
+  <meta name="description" content="饿了么是中国专业的网上订餐平台，目前已覆盖北京、上海、杭州、广州等300多个城市，提供各类中式、日式、韩式、西式、下午茶、夜宵等优质美食，并提供送餐上门服务，让订餐更加轻松，叫外卖就上饿了么！" />
+  <meta name="keywords" content="饿了么，网上订餐，外卖，快餐外卖，外卖网" />
+  <meta name="apple-mobile-web-app-title" content="饿了么" />
+  <meta name="theme-color" content="#0096ff" />
+  <link rel="apple-touch-startup-image" href="img/startup.png" />
+  <title>饿了么</title>
+  <script></script>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <style>
+  *,::after,::before {
+      -webkit-box-sizing: inherit;
+      box-sizing: inherit;
+      -webkit-tap-highlight-color: transparent
+  }
+
+  html {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      color: #333;
+      font-family: 'Helvetica Neue',Tahoma,Arial,PingFangSC-Regular,'Hiragino Sans GB','Microsoft Yahei',sans-serif;
+      line-height: 1.2;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+      -ms-text-size-adjust: none;
+      text-size-adjust: none
+  }
+
+  body,button,dd,dl,ol,ul {
+      margin: 0;
+      padding: 0
+  }
+
+  ol,ul {
+      list-style: none
+  }
+
+  a {
+      outline: 0;
+      color: inherit;
+      text-decoration: none
+  }
+
+  a,img {
+      -webkit-touch-callout: none
+  }
+
+  button,input,select,textarea {
+      outline: 0;
+      border: none;
+      font-size: inherit;
+      font-family: inherit
+  }
+
+  h1,h2,h3,h4,h5,h6,p {
+      margin: 0;
+      font-weight: 400
+  }
+
+  img {
+      max-width: 100%
+  }
+
+  textarea {
+      resize: none
+  }
+
+  select {
+      background-color: transparent;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none
+  }
+
+  input[type=button],input[type=reset],input[type=submit] {
+      -webkit-appearance: button;
+      -moz-appearance: button;
+      appearance: button
+  }
+
+  input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 100px #fff inset;
+      box-shadow: 0 0 0 100px #fff inset
+  }
+
+  .shellAnimation {
+      -webkit-animation: shellPulse 1s infinite;
+      animation: shellPulse 1s infinite
+  }
+
+  @-webkit-keyframes shellPulse {
+      0% {
+          opacity: 1
+      }
+
+      50% {
+          opacity: .6
+      }
+
+      100% {
+          opacity: 1
+      }
+  }
+
+  @keyframes shellPulse {
+      0% {
+          opacity: 1
+      }
+
+      50% {
+          opacity: .6
+      }
+
+      100% {
+          opacity: 1
+      }
+  }
+
+  @-webkit-keyframes spinner {
+      from {
+          -webkit-transform: rotate(0);
+          transform: rotate(0)
+      }
+
+      to {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg)
+      }
+  }
+
+  @keyframes spinner {
+      from {
+          -webkit-transform: rotate(0);
+          transform: rotate(0)
+      }
+
+      to {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg)
+      }
+  }
+
+  .spinner {
+      height: 1.333333rem;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: end;
+      -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+      align-items: flex-end;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center
+  }
+
+  .spinner:after {
+      display: block;
+      content: '';
+      width: 10.24px;
+      width: .64rem;
+      height: 10.24px;
+      height: .64rem;
+      -webkit-animation: spinner .5s infinite linear;
+      animation: spinner .5s infinite linear;
+      border-left: .853px solid transparent;
+      border-left: .053333rem solid transparent;
+      border-right: .853px solid transparent;
+      border-right: .053333rem solid transparent;
+      border-bottom: .853px solid transparent;
+      border-bottom: .053333rem solid transparent;
+      border-top: .853px solid #2395ff;
+      border-top: .053333rem solid #2395ff;
+      border-radius: 100%
+  }
+  </style>
+  <link rel="stylesheet" href="css/vue-swipe.css" />
+  <link href="css/msite.css" rel="stylesheet" />
+  <style type="text/css">
+  .index-1ECZ3_0 {
+	margin-bottom: .213333rem;
+	margin-bottom: 2.133333vw;
+	font-size: 0
+}
+
+.index-1y1Q5_0 {
+	background: #fff
+}
+
+.index-3xB2N_0,.index-QE-ye_0 {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	padding: 0 .266667rem;
+	padding: 0 2.666667vw
+}
+
+.index-3xB2N_0 .index-Q3GS5_0,.index-QE-ye_0 .index-Q3GS5_0 {
+	position: relative;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(5%,#f4f4f4),color-stop(95%,#fafafa));
+	background: -webkit-linear-gradient(bottom,#f4f4f4 5%,#fafafa 95%);
+	background: linear-gradient(0deg,#f4f4f4 5%,#fafafa 95%)
+}
+
+.index-3xB2N_0 .index-Q3GS5_0:not(:last-child),.index-QE-ye_0 .index-Q3GS5_0:not(:last-child) {
+	margin-right: .08rem;
+	margin-right: .8vw
+}
+
+.index-3xB2N_0 {
+	margin-bottom: .08rem;
+	margin-bottom: .8vw
+}
+
+.index-3xB2N_0 .index-Q3GS5_0 {
+	height: 3.733333rem;
+	height: 37.333333vw;
+	padding: .32rem 0 0 .4rem;
+	padding: 3.2vw 0 0 4vw;
+	z-index: 1
+}
+
+.index-3xB2N_0 .index-Q3GS5_0 .index-1qvN6_0 {
+	font-size: .453333rem;
+	font-weight: 700;
+	margin-bottom: .133333rem;
+	margin-bottom: 1.333333vw;
+	color: #333
+}
+
+.index-3xB2N_0 .index-Q3GS5_0 .index-2W67h_0 {
+	font-size: .346667rem;
+	color: #777;
+	margin-bottom: .24rem;
+	margin-bottom: 2.4vw
+}
+
+.index-3xB2N_0 .index-Q3GS5_0 .index-1DFa7_0 {
+	font-size: .32rem;
+	color: #af8260;
+	font-weight: 700
+}
+
+.index-3xB2N_0 .index-Q3GS5_0 img {
+	position: absolute;
+	right: 0;
+	bottom: -.2rem;
+	bottom: -2vw;
+	width: 3.2rem;
+	width: 32vw;
+	height: 2.133333rem;
+	height: 21.333333vw
+}
+
+.index-3xB2N_0 .index-3OXhZ_0 .index-1qvN6_0 {
+	color: #e81919
+}
+
+.index-3xB2N_0 .index-3OXhZ_0 .index-1DFa7_0 {
+	color: #333
+}
+
+.index-3xB2N_0 .index-3OXhZ_0 .index-1DFa7_0>span {
+	color: #e81919
+}
+
+.index-3xB2N_0 .index-1xT5J_0 {
+	height: 2.933333rem;
+	height: 29.333333vw
+}
+
+.index-3xB2N_0 .index-1xT5J_0 img {
+	top: .24rem;
+	top: 2.4vw;
+	right: .373333rem;
+	right: 3.733333vw;
+	width: 3.76rem;
+	width: 37.6vw;
+	height: 2.506667rem;
+	height: 25.066667vw
+}
+
+.index-QE-ye_0 {
+	padding-bottom: .28rem;
+	padding-bottom: 2.8vw;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex
+}
+
+.index-QE-ye_0 .index-Q3GS5_0 {
+	height: 3.546667rem;
+	height: 35.466667vw;
+	text-align: center;
+	position: relative
+}
+
+.index-QE-ye_0 .index-Q3GS5_0 .index-1qvN6_0 {
+	font-size: .426667rem;
+	font-weight: 700;
+	color: #333;
+	margin: .426667rem 0 .133333rem;
+	margin: 4.266667vw 0 1.333333vw
+}
+
+.index-QE-ye_0 .index-Q3GS5_0 .index-2W67h_0 {
+	padding: 0 .053333rem;
+	padding: 0 .533333vw;
+	font-size: .293333rem;
+	color: #777;
+	border-radius: .026667rem;
+	border-radius: .266667vw;
+	border: 1px solid #bbb
+}
+
+.index-QE-ye_0 .index-Q3GS5_0 img {
+	position: absolute;
+	width: 3.093333rem;
+	width: 30.933333vw;
+	height: 2.053333rem;
+	height: 20.533333vw;
+	bottom: 0;
+	left: 0
+}
+
+.index-QE-ye_0 .index-3Dnrh_0 .index-2W67h_0 {
+	color: #ff5339;
+	border-color: #ffa89b
+}
+
+.index-CUiNS_0 {
+	padding: 0 .266667rem;
+	padding: 0 2.666667vw;
+	background-color: #fff
+}
+
+.index-CUiNS_0 img {
+	width: 9.466667rem;
+	width: 94.666667vw;
+	height: 2.373333rem;
+	height: 23.733333vw
+}
+
+.index-3ZbMh_0 {
+	display: inline-block;
+	position: fixed;
+	right: .16rem;
+	right: 1.6vw;
+	bottom: 3.2rem;
+	bottom: 32vw;
+	z-index: 100
+}
+
+.index-1zDmM_0 {
+	width: 2.4rem;
+	width: 24vw
+}
+
+.iPhoneXMode .index-3ZbMh_0 {
+	bottom: 3.653333rem;
+	bottom: 36.533333vw
+}
+  </style>
+ </head>
+ <body ontouchstart="" style="font-size: 24px;">
+
+ </body>
+</html>
